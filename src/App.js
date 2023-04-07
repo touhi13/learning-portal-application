@@ -1,57 +1,87 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './assets/style/output.css';
+import StudentLogin from './pages/auth/StudentLogin';
+import StudentRegistration from "./pages/auth/StudentRegistration"
+import Quiz from './pages/student/Quiz';
+import CoursePlayer from './pages/student/CoursePlayer';
+import Leaderboard from './pages/student/Leaderboard';
+import AdminLogin from './pages/auth/AdminLogin';
+import Assignment from './pages/admin/Assignment';
+import AssignmentMark from './pages/admin/AssignmentMark';
+import Dashboard from './pages/admin/Dashboard';
+import Quizzes from './pages/admin/Quizzes';
+import Videos from './pages/admin/Videos';
+import useAthCheck from './hooks/useAuthCheck';
+import PrivateRouter from './middlewares/PrivateRouter';
+import PublicRouter from './middlewares/PublicRouter';
+import PrivateAdminRouter from './middlewares/PrivateAdminRouter';
+import PublicAdminRouter from './middlewares/PublicAdminRouter';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+  const authChecked = useAthCheck()
+  return !authChecked ? (<>Checking authentication</>) : (
+    <Router>
+      <Routes>
+        {/* student panel  */}
+        <Route path='/' element={
+          <PublicRouter>
+            <StudentLogin />
+          </PublicRouter>
+        } />
+        <Route path="/student-registration" element={
+          <PublicRouter>
+            <StudentRegistration />
+          </PublicRouter>
+        } />
+        <Route path="/leader-board" element={
+          <PrivateRouter>
+            <Leaderboard />
+          </PrivateRouter>
+        } />
+        <Route path="/course-player" element={
+          <PrivateRouter>
+            <CoursePlayer />
+          </PrivateRouter>
+        } />
+        <Route path="/quiz" element={
+          <PrivateRouter>
+            <Quiz />
+          </PrivateRouter>
+        } />
+        {/* Admin panel  */}
+        <Route path="/admin/login" element={
+          <PublicAdminRouter>
+            <AdminLogin />
+          </PublicAdminRouter>
+
+        } />
+        <Route path="/admin/dashboard" element={
+          <PrivateAdminRouter>
+            <Dashboard />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/assignment" element={
+          <PrivateAdminRouter>
+            <Assignment />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/assignment-mark" element={
+          <PrivateAdminRouter>
+            <AssignmentMark />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/quizzes" element={<PrivateAdminRouter>
+          <Quizzes />
+        </PrivateAdminRouter>
+        } />
+        <Route path="/admin/videos" element={
+          <PrivateAdminRouter>
+            <Videos />
+          </PrivateAdminRouter>
+        } />
+      </Routes>
+    </Router>
   );
 }
 
