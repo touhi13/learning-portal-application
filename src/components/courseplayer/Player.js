@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetVideoQuery } from '../../features/videos/videosApi';
 import formatDate from '../../utils/formatDate';
 import AssignmentModal from './AssignmentModal';
 import { useGetAssignmentMarksQuery } from '../../features/assignmentMarks/assignmentMarksApi';
 import { useSelector } from 'react-redux';
 import { useGetAssignmentsQuery } from '../../features/assignments/assignmentsApi';
+import { useGetQuizzesQuery } from '../../features/quizzes/quizzesApi';
+import { useGetQuizMarksQuery } from '../../features/quizMark/quizMarkApi';
 
 export default function Player() {
     const { videoId } = useParams();
@@ -28,6 +30,19 @@ export default function Player() {
         isLoading: assignmentMarksIsLoading,
         isError: assignmentMarksIsError,
     } = useGetAssignmentMarksQuery();
+    const {
+        data: quizzes,
+        isLoading: quizzesIsLoading,
+        isError: quizzesIsError,
+    } = useGetQuizzesQuery();
+
+    const {
+        data: quizMarks,
+        isLoading: quizMarksIsLoading,
+        isError: quizMarksIsError,
+    } = useGetQuizMarksQuery();
+
+
 
     const [assignment, setAssignment] = useState({});
     const [assignmentModalOpened, setAssignmentModalOpened] = useState(false);
@@ -39,7 +54,7 @@ export default function Player() {
     // decide on disablity of assignment button
     const decideAssignmentButton = (assignment) => {
         const { id: assignment_id } = assignment;
-// console.log(assignment)
+        // console.log(assignment)
         if (
             !assignmentMarksIsLoading &&
             !assignmentMarksIsError &&
@@ -82,6 +97,45 @@ export default function Player() {
             </button>
         ) : null;
     }
+    const decideQuizButton = (quiz) => {
+        const { video_id: quizVideoId } = quiz;
+
+        if (!quizMarksIsLoading && !quizMarksIsError && quizMarks?.length > 0) {
+            const cancelSubmission = quizMarks.find(
+                (quiz) => quiz.video_id == quizVideoId && quiz.student_id == auth?.user?.id
+            );
+            return cancelSubmission ? true : false;
+        }
+    };
+
+    const navigate = useNavigate();
+
+    let quizButton = null;
+
+    if (
+        !videoIsLoading &&
+        !videoIsError &&
+        !quizzesIsLoading &&
+        !quizzesIsError &&
+        quizzes?.length > 0
+    ) {
+        const selectedQuiz = quizzes.find(
+            (quiz) => quiz.video_id == video.id
+        );
+
+        let decision;
+        if (selectedQuiz) decision = decideQuizButton(selectedQuiz);
+
+        quizButton = selectedQuiz ? (
+            <button
+                disabled={decision}
+                onClick={() => navigate(`/quiz/${video.id}`)}
+                className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary"
+            >
+                কুইজে অংশগ্রহণ করুন
+            </button>
+        ) : null;
+    }
 
     return (
         <div className="col-span-full w-full space-y-8 lg:col-span-2">
@@ -108,12 +162,7 @@ export default function Player() {
 
                 <div className="flex gap-4">
                     {assignmentButton}
-
-                    <a href="./Quiz.html"
-                        className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">কুইজে
-                        অংশগ্রহণ
-                        করুন
-                    </a>
+                    {quizButton}
                 </div>
                 <p className="mt-4 text-sm text-slate-400 leading-6">
                     {video?.description}
