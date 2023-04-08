@@ -1,6 +1,60 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useDeleteVideoMutation } from '../../features/videos/videosApi';
+import { useDeleteAssignmentMutation, useGetAssignmentsQuery } from '../../features/assignments/assignmentsApi';
+import { useDeleteQuizMutation, useGetQuizzesQuery } from '../../features/quizzes/quizzesApi';
+import { useDeleteAssignmentMarkMutation, useGetAssignmentMarksQuery } from '../../features/assignmentMarks/assignmentMarksApi';
+import { useDeleteQuizMarkMutation, useGetQuizMarksQuery } from '../../features/quizMark/quizMarkApi';
 
 export default function VideoItem({video}) {
+
+    const [deleteVideo] = useDeleteVideoMutation();
+
+    const { data: assignments } = useGetAssignmentsQuery();
+    const [deleteAssignment] = useDeleteAssignmentMutation();
+
+    const { data: quizzes } = useGetQuizzesQuery();
+    const [deleteQuiz] = useDeleteQuizMutation();  
+    
+    const { data: assignmentMarks } = useGetAssignmentMarksQuery();
+    const [deleteAssignmentMark] = useDeleteAssignmentMarkMutation();
+  
+    const { data: quizMarks } = useGetQuizMarksQuery();
+    const [deleteQuizMark] = useDeleteQuizMarkMutation();
+
+    const handleDelete = (video) => {
+        deleteVideo(video.id);
+    
+        const concernedAssignments = assignments?.filter(
+          (assignment) => assignment.video_title === video.title
+        );
+        concernedAssignments.forEach((assignment) =>
+          deleteAssignment(assignment.id)
+        );
+    
+        const concernedAssignmentsIds = concernedAssignments.map((assignment) => {
+          return assignment.id;
+        });
+    
+        const concernedQuizzes = quizzes?.filter(
+          (quiz) => quiz.video_title === video.title
+        );
+        concernedQuizzes.forEach((quiz) => deleteQuiz(quiz.id));
+    
+        const concernedQuizMarks = quizMarks?.filter(
+          (quizMark) => quizMark.video_title === video.title
+        );
+        concernedQuizMarks.forEach((quizMark) => deleteQuizMark(quizMark.id));
+    
+        const concernedAssignmentMarks = assignmentMarks?.filter((assignmentMark) =>
+          concernedAssignmentsIds.includes(assignmentMark.assignment_id)
+        );
+        concernedAssignmentMarks.forEach((assignmentMark) =>
+          deleteAssignmentMark(assignmentMark.id)
+        );
+      };
+    
+    const navigate = useNavigate();
     return (
         <tr key={video.id}>
             <td className="table-td">{video.title}</td>
@@ -12,7 +66,7 @@ export default function VideoItem({video}) {
                     stroke-width="1.5"
                     stroke="currentColor"
                     className="w-6 h-6 hover:text-red-500 cursor-pointer transition-all"
-                //   onClick={() => handleDelete(video)}
+                  onClick={() => handleDelete(video)}
                 >
                     <path
                         stroke-linecap="round"
@@ -26,7 +80,7 @@ export default function VideoItem({video}) {
                     stroke-width="1.5"
                     stroke="currentColor"
                     className="w-6 h-6 hover:text-blue-500 cursor-pointer transition-all"
-                //   onClick={() => navigate(`/admin/${video.id}/editVideo`)}
+                  onClick={() => navigate(`/admin/edit-video/${video.id}`)}
                 >
                     <path
                         stroke-linecap="round"

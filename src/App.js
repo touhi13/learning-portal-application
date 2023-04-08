@@ -11,6 +11,7 @@ import Assignment from './pages/admin/Assignment';
 import AssignmentMark from './pages/admin/AssignmentMark';
 import Dashboard from './pages/admin/Dashboard';
 import Quizzes from './pages/admin/Quizzes';
+import AddQuiz from './pages/admin/AddQuiz';
 import Videos from './pages/admin/Videos';
 import useAthCheck from './hooks/useAuthCheck';
 import PrivateRouter from './middlewares/PrivateRouter';
@@ -18,6 +19,10 @@ import PublicRouter from './middlewares/PublicRouter';
 import PrivateAdminRouter from './middlewares/PrivateAdminRouter';
 import PublicAdminRouter from './middlewares/PublicAdminRouter';
 import AddAssignment from './pages/admin/AddAssignment';
+import EditAssignment from './pages/admin/EditAssignment';
+import AddVideo from './pages/admin/AddVideo';
+import EditVideo from './pages/admin/EditVideo';
+import EditQuiz from './pages/admin/EditQuiz';
 
 function App() {
   const authChecked = useAthCheck()
@@ -72,18 +77,42 @@ function App() {
             <AddAssignment />
           </PrivateAdminRouter>
         } />
+        <Route path="/admin/edit-assignment/:assignmentId" element={
+          <PrivateAdminRouter>
+            <EditAssignment />
+          </PrivateAdminRouter>
+        } />
         <Route path="/admin/assignment-mark" element={
           <PrivateAdminRouter>
             <AssignmentMark />
           </PrivateAdminRouter>
         } />
-        <Route path="/admin/quizzes" element={<PrivateAdminRouter>
+        <Route path="/admin/quizzes" element={
+          <PrivateAdminRouter>
           <Quizzes />
+        </PrivateAdminRouter>
+        } />
+        <Route path="/admin/add-quiz" element={<PrivateAdminRouter>
+          <AddQuiz />
+        </PrivateAdminRouter>
+        } />
+        <Route path="/admin/edit-quiz/:quizId" element={<PrivateAdminRouter>
+          <EditQuiz />
         </PrivateAdminRouter>
         } />
         <Route path="/admin/videos" element={
           <PrivateAdminRouter>
             <Videos />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/add-video" element={
+          <PrivateAdminRouter>
+            <AddVideo />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/edit-video/:videoId" element={
+          <PrivateAdminRouter>
+            <EditVideo />
           </PrivateAdminRouter>
         } />
       </Routes>

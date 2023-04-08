@@ -1,24 +1,10 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import EditQuizForm from '../../components/EditQuizForm';
-import { useGetQuizQuery } from '../../features/quizzes/quizzesApi';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { userLoggedOut } from '../../features/auth/authSlice';
+import { useParams } from "react-router-dom";
+import { useGetQuizQuery } from "../../features/quizzes/quizzesApi";
+import QuizForm from "../../components/form/quiz/QuizForm";
+import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function EditTaskPage() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const { role } = JSON.parse(localStorage.auth).user;
-
-    if (role !== 'admin') {
-      navigate('/admin');
-
-      dispatch(userLoggedOut());
-      window.localStorage.clear();
-    }
-  }, [dispatch, navigate]);
+export default function EditQuiz() {
 
   const { quizId } = useParams();
   const { data: quiz, isLoading, isError, error } = useGetQuizQuery(quizId);
@@ -27,16 +13,19 @@ export default function EditTaskPage() {
   if (isLoading) content = <div>Loading...</div>;
   if (!isLoading && isError) content = <div>{error}</div>;
   if (!isLoading && !isError && quiz?.id) {
-    content = <EditQuizForm quiz={quiz} />;
+    content = <QuizForm quiz={quiz} />;
   }
 
   return (
-    <div className="container relative">
-      <main className="relative z-20 max-w-3xl mx-auto rounded-lg xl:max-w-none">
-        <div className="justify-center mb-10 space-y-2 md:flex md:space-y-0">
+    <AdminLayout>
+      <div>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-100">
+          Edit Quiz
+        </h2>
+      </div>
           {content}
-        </div>
-      </main>
-    </div>
+    </AdminLayout>
+
+
   );
 }

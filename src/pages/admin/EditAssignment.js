@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
+import AssignmentForm from '../../components/form/assignment/AssignmentForm';
 import { useGetAssignmentQuery } from "../../features/assignments/assignmentsApi";
+import AdminLayout from "../../components/layout/AdminLayout";
 
 
-export default function EditTaskPage() {
+export default function EditAssignment() {
   const { assignmentId } = useParams();
   const {
     data: assignment,
@@ -15,16 +17,16 @@ export default function EditTaskPage() {
   if (isLoading) content = <div>Loading...</div>;
   if (!isLoading && isError) content = <div>{error}</div>;
   if (!isLoading && !isError && assignment?.id) {
-    content = <EditAssignmentForm assignment={assignment} />;
+    content = <AssignmentForm assignment={assignment} />;
   }
-
   return (
-    <div className="container relative">
-      <main className="relative z-20 max-w-3xl mx-auto rounded-lg xl:max-w-none">
-        <div className="justify-center mb-10 space-y-2 md:flex md:space-y-0">
-          {content}
-        </div>
-      </main>
-    </div>
+    <AdminLayout>
+      <div>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-100">
+          Edit Assignment
+        </h2>
+      </div>
+      {content}
+    </AdminLayout>
   );
 }

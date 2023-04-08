@@ -2,14 +2,9 @@ import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../components/layout/AdminLayout";
 import { useDeleteAssignmentMarkMutation, useGetAssignmentMarksQuery } from "../../features/assignmentMarks/assignmentMarksApi";
 import { useDeleteAssignmentMutation, useGetAssignmentsQuery } from "../../features/assignments/assignmentsApi";
-import { useDispatch } from "react-redux";
-
 
 export default function Assignments() {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-
-
     const {
         data: assignments,
         isLoading,
@@ -65,7 +60,7 @@ export default function Assignments() {
                         stroke-width="1.5"
                         stroke="currentColor"
                         className="w-6 h-6 hover:text-blue-500 cursor-pointer transition-all"
-                        onClick={() => navigate(`/admin/${assignment.id}/editAssignment`)}
+                        onClick={() => navigate(`/admin/edit-assignment/${assignment.id}`)}
                     >
                         <path
                             stroke-linecap="round"

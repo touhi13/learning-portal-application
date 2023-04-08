@@ -41,7 +41,7 @@ export default function Quizzes() {
                         stroke-width="1.5"
                         stroke="currentColor"
                         className="w-6 h-6 hover:text-blue-500 cursor-pointer transition-all"
-                        onClick={() => navigate(`/admin/${quiz.id}/editQuiz`)}
+                        onClick={() => navigate(`/admin/edit-quiz/${quiz.id}`)}
                     >
                         <path
                             stroke-linecap="round"
@@ -60,7 +60,7 @@ export default function Quizzes() {
                 <div className="w-full flex">
                     <button
                         className="btn ml-auto"
-                        onClick={(e) => navigate('/admin/addQuiz')}
+                        onClick={(e) => navigate('/admin/add-quiz')}
                     >
                         Add Quiz
                     </button>
