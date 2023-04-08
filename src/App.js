@@ -17,6 +17,7 @@ import PrivateRouter from './middlewares/PrivateRouter';
 import PublicRouter from './middlewares/PublicRouter';
 import PrivateAdminRouter from './middlewares/PrivateAdminRouter';
 import PublicAdminRouter from './middlewares/PublicAdminRouter';
+import AddAssignment from './pages/admin/AddAssignment';
 
 function App() {
   const authChecked = useAthCheck()
@@ -64,6 +65,11 @@ function App() {
         <Route path="/admin/assignment" element={
           <PrivateAdminRouter>
             <Assignment />
+          </PrivateAdminRouter>
+        } />
+        <Route path="/admin/add-assignment" element={
+          <PrivateAdminRouter>
+            <AddAssignment />
           </PrivateAdminRouter>
         } />
         <Route path="/admin/assignment-mark" element={

@@ -5,8 +5,12 @@ import learningportal from "../../assets/image/learningportal.svg";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
+import { useSelector } from 'react-redux';
 
 const Nav = () => {
+    // Accessing the auth state from the Redux store
+    const { user } = useSelector((state) => state.auth);
+
     const localStorageData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("auth")) : null;
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -20,18 +24,30 @@ const Nav = () => {
             <div className="max-w-7xl px-5 lg:px-0 mx-auto flex justify-between py-3">
                 <img className="h-10" src={learningportal} />
                 <div className="flex items-center gap-3">
-                    <Link to="/course-player/1"
-                        className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
-                        activeClassName="text-red-600"
-                    >
-                        Course Access
-                    </Link>
-                    <Link to="/leader-board"
-                        className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
-                        activeClassName="text-red-600"
-                    >
-                        Leaderboard
-                    </Link>
+                    {
+                        user?.role === 'student' ?
+                            <>
+                                <Link to="/course-player/1"
+                                    className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
+                                    activeClassName="text-red-600"
+                                >
+                                    Course Access
+                                </Link>
+                                <Link to="/leader-board"
+                                    className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
+                                    activeClassName="text-red-600"
+                                >
+                                    Leaderboard
+                                </Link>
+                            </>
+                            : <Link to="/admin/dashboard"
+                                className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
+                                activeClassName="text-red-600"
+                            >
+                                Dashboard
+                            </Link>
+                    }
+
                     <h2 className="font-bold">{localStorageData?.user?.name}</h2>
                     <button
                         onClick={(e) => logOut()}
