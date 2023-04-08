@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 
 const PublicRouter = ({children}) => {
     const isLoggedIn = userAuth();
-  return !isLoggedIn ? children : <Navigate to={"/leader-board"} />
+  return !isLoggedIn ? children : <Navigate to={"/course-player/1"} />
 }
 
 export default PublicRouter

@@ -2,12 +2,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import learningportal from "../../assets/image/learningportal.svg";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
 
 const Nav = () => {
-    const locaStorageData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("auth")) : null;
+    const localStorageData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("auth")) : null;
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const logOut = () => {
@@ -20,7 +20,19 @@ const Nav = () => {
             <div className="max-w-7xl px-5 lg:px-0 mx-auto flex justify-between py-3">
                 <img className="h-10" src={learningportal} />
                 <div className="flex items-center gap-3">
-                    <h2 className="font-bold">{locaStorageData?.user?.name}</h2>
+                    <Link to="/course-player/1"
+                        className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
+                        activeClassName="text-red-600"
+                    >
+                        Course Access
+                    </Link>
+                    <Link to="/leader-board"
+                        className="text-gray-700 hover:text-gray-900 font-medium hover:cursor-pointer active:text-red-600"
+                        activeClassName="text-red-600"
+                    >
+                        Leaderboard
+                    </Link>
+                    <h2 className="font-bold">{localStorageData?.user?.name}</h2>
                     <button
                         onClick={(e) => logOut()}
                         className="flex gap-2 items-center px-4 py-1 rounded-full text-sm transition-all bg-red-600 hover:bg-red-700 font-medium">

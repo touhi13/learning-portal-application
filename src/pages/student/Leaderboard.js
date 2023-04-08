@@ -8,7 +8,6 @@ import { useGetAssignmentDataQuery, useGetLeaderBoardDataQuery } from '../../fea
 const Leaderboard = () => {
   // Accessing the auth state from the Redux store
   const auth = useSelector((state) => state.auth)
-  console.log({ auth: auth?.user?.id })
 
   // Declaring some state variables to hold the data from the leaderBoard and assignment API queries
   const [leaderBoard, setLeaderBoard] = useState([]);

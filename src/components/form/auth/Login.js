@@ -25,7 +25,7 @@ export default function Login({ userType }) {
             navigate("/admin/dashboard")
         } else if (data?.accessToken && data?.user && data?.user?.role === "student") {
             NotificationManager.success("Login Success", "", 5000)
-            navigate("/leader-board")
+            navigate("/course-player/1")
         }
     }, [data, error, navigate])
 

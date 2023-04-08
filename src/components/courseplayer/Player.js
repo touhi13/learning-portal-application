@@ -51,16 +51,13 @@ export default function Player() {
         setAssignmentModalOpened((prevState) => !prevState);
         setAssignment(assignmentData);
     };
-    // decide on disablity of assignment button
     const decideAssignmentButton = (assignment) => {
         const { id: assignment_id } = assignment;
-        // console.log(assignment)
         if (
             !assignmentMarksIsLoading &&
             !assignmentMarksIsError &&
             assignmentMarks?.length > 0
         ) {
-            // console.log("jii")
             const cancelSubmission = assignmentMarks.find(
                 (assignment) =>
                     assignment.assignment_id == assignment_id &&
