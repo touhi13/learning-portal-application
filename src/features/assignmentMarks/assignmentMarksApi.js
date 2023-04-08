@@ -27,7 +27,7 @@ export const assignmentMarksApi = apiSlice.injectEndpoints({
               }
             )
           );
-        } catch {}
+        } catch { }
       },
     }),
     editAssignmentMark: builder.mutation({
@@ -61,7 +61,7 @@ export const assignmentMarksApi = apiSlice.injectEndpoints({
               }
             )
           );
-        } catch {}
+        } catch { }
       },
     }),
     deleteAssignmentMark: builder.mutation({

@@ -43,14 +43,14 @@ export default function Login({ userType }) {
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm -space-y-px">
                 <div>
-                    <label for="email-address" className="sr-only">Email address</label>
-                    <input id="email-address" name="email" type="email" autocomplete="email" required
+                    <label htmlFor="email-address" className="sr-only">Email address</label>
+                    <input id="email-address" name="email" type="email" autoComplete="email" required
                         className="login-input rounded-t-md" placeholder="Email address" value={loginData.email}
                         onChange={handleChange} />
                 </div>
                 <div>
-                    <label for="password" className="sr-only">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                    <label htmlFor="password" className="sr-only">Password</label>
+                    <input id="password" name="password" type="password" autoComplete="current-password" required
                         className="login-input rounded-b-md" placeholder="Password" value={loginData.password}
                         onChange={handleChange} />
                 </div>

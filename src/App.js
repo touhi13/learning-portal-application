@@ -39,7 +39,7 @@ function App() {
             <Leaderboard />
           </PrivateRouter>
         } />
-        <Route path="/course-player" element={
+        <Route path="/course-player/:videoId" element={
           <PrivateRouter>
             <CoursePlayer />
           </PrivateRouter>
@@ -50,7 +50,7 @@ function App() {
           </PrivateRouter>
         } />
         {/* Admin panel  */}
-        <Route path="/admin/login" element={
+        <Route path="/admin" element={
           <PublicAdminRouter>
             <AdminLogin />
           </PublicAdminRouter>
